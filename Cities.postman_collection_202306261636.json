@@ -1,0 +1,209 @@
+{
+	"info": {
+		"_postman_id": "dc1f49df-78e9-4369-8668-ee31174a1b92",
+		"name": "Cities",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18312489"
+	},
+	"item": [
+		{
+			"name": "GetAllCities",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7202/api/Cities",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7202",
+					"path": [
+						"api",
+						"Cities"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllCities Pg",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7202/api/cities/GetCitiesPg?pageNumber=1&pageSize=2",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7202",
+					"path": [
+						"api",
+						"cities",
+						"GetCitiesPg"
+					],
+					"query": [
+						{
+							"key": "pageNumber",
+							"value": "1"
+						},
+						{
+							"key": "pageSize",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllCities Pg Filter Sorting",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7202/api/cities/GetCitiesPg?pageNumber=1&pageSize=2&minPopulation=1000&maxPopulation=10000000&zipcode=2&sortcolumn=population&sortorder=desc",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7202",
+					"path": [
+						"api",
+						"cities",
+						"GetCitiesPg"
+					],
+					"query": [
+						{
+							"key": "pageNumber",
+							"value": "1"
+						},
+						{
+							"key": "pageSize",
+							"value": "2"
+						},
+						{
+							"key": "minPopulation",
+							"value": "1000"
+						},
+						{
+							"key": "maxPopulation",
+							"value": "10000000"
+						},
+						{
+							"key": "zipcode",
+							"value": "2"
+						},
+						{
+							"key": "cityname",
+							"value": "град",
+							"disabled": true
+						},
+						{
+							"key": "sortcolumn",
+							"value": "population"
+						},
+						{
+							"key": "sortorder",
+							"value": "desc"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetByCityID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7202/api/Cities/643b309f-d8c1-4b85-b48a-285cfdd69114",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7202",
+					"path": [
+						"api",
+						"Cities",
+						"643b309f-d8c1-4b85-b48a-285cfdd69114"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "citiescsv",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7202/api/cities/citiescsv",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7202",
+					"path": [
+						"api",
+						"cities",
+						"citiescsv"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "citiesXLS",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7202/api/cities/citiesexcel",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7202",
+					"path": [
+						"api",
+						"cities",
+						"citiesexcel"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AddCity  POST",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"cityName\": \"Ниш\",\r\n    \"dateOfFoundation\": \"1500-01-01T00:00:00\",\r\n    \"cityHistory\": \"...\",\r\n    \"population\": 250000,\r\n    \"zipCode\": \"18000\",\r\n    \"description\": \"...\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7202/api/Cities",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7202",
+					"path": [
+						"api",
+						"Cities"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
