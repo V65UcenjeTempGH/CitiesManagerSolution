@@ -29,14 +29,14 @@ namespace CitiesManager.Core.Domain.RepositoryContracts
         /// 22.06.2023.
         /// 23.06.2023. zamenuo: pageNumber, pageSize sa CityParameters cityParameters
         /// 23.06.2023. - PagedList
+        /// 03.07.2023. - CityResponseRecord
         /// </summary>
-        /// <param name="pageNumber"></param>
-        /// <param name="pageSize"></param>
+        /// <param name="cityParameters"></param>
         /// <returns></returns>
-        Task<PagedList<CityResponse>> GetAllCitiesPg(CityParameters cityParameters);
+        Task<PagedList<CityResponseRecord>> GetAllCitiesPg(CityParameters cityParameters);
 
         /// <summary>
-        /// 23.06.2023.
+        /// uk.br. slogova
         /// </summary>
         /// <returns>return uk.br. slogova</returns>
         Task<int> GetCountAsync();
@@ -71,5 +71,7 @@ namespace CitiesManager.Core.Domain.RepositoryContracts
         /// <param name="city">City object to update</param>
         /// <returns>Returns the updated city object</returns>
         Task<City> UpdateCity(City city);
+
+
     }
 }

@@ -1,13 +1,10 @@
-﻿using Azure;
-using CitiesManager.Core.Domain.Entities;
+﻿using CitiesManager.Core.Domain.Entities;
 using CitiesManager.Core.Domain.RepositoryContracts;
 using CitiesManager.Core.DTO;
 using CitiesManager.Core.Helpers;
 using CitiesManager.WebAPI.DatabaseContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Drawing.Printing;
 using System.Linq.Expressions;
 
 namespace CitiesManager.Infrastructure.Repositories
@@ -25,22 +22,10 @@ namespace CitiesManager.Infrastructure.Repositories
             _db = db;
             _logger = logger;
         }
-        public async Task<City> AddCity(City city)
-        {
-            _db.Cities.Add(city);
-            await _db.SaveChangesAsync();
-            return city;
 
-        }
-
-        public async Task<bool> DeleteCityByCityID(Guid cityID)
-        {
-            _db.Cities.RemoveRange(_db.Cities.Where(temp => temp.CityID == cityID));
-            int rowsDeleted = await _db.SaveChangesAsync();
-
-            return rowsDeleted > 0;
-        }
-
+        /// <summary>
+        /// </summary>
+        /// <returns></returns>
         public async Task<List<City>> GetAllCities()
         {
             _logger.LogInformation("GetAllCities of CitiesRepository");
@@ -54,12 +39,9 @@ namespace CitiesManager.Infrastructure.Repositories
         /// 25.06.2023. - Korak_4 - Pagination + Filters + Sorting
         /// </summary>
         /// <returns></returns>
-        public async Task<PagedList<CityResponse>> GetAllCitiesPg(CityParameters cityParameters)
+        public async Task<PagedList<CityResponseRecord>> GetAllCitiesPg(CityParameters cityParameters)
         {
             _logger.LogInformation("GetAllCities of CitiesRepository Pagination");
-
-            // zamenuo sa PagedList
-            //return await _db.Cities.Skip(skip).Take(cityParameters.PageSize).ToListAsync();
 
             var query = _db.Cities.AsQueryable();
 
@@ -101,35 +83,27 @@ namespace CitiesManager.Infrastructure.Repositories
             }
             // End Sort
 
-            var cityDTO = query.Select(c => new CityResponse
-            {
-                CityID = c.CityID,
-                CityName = c.CityName,
-                CityHistory = c.CityHistory,
-                ZipCode = c.ZipCode,
-                DateOfFoundation = c.DateOfFoundation,
-                Description = c.Description,
-                Population = c.Population
-            });
+            // 03.07.2023. - prebacio na CityResponseRecord
+            var cityDTO = query.Select(c => new CityResponseRecord
+            (
+                 c.CityID,
+                 c.CityName,
+                 c.DateOfFoundation,
+                 c.CityHistory,
+                 c.Population,
+                 c.ZipCode,
+                 c.Description
+            ));
+
 
             int count = await cityDTO.CountAsync();
             var items = await cityDTO.Skip((cityParameters.PageNumber - 1) * cityParameters.PageSize)
                 .Take(cityParameters.PageSize)
                 .ToListAsync();
 
-            return new PagedList<CityResponse>(items, count, cityParameters.PageNumber, cityParameters.PageSize);
+            return new PagedList<CityResponseRecord>(items, count, cityParameters.PageNumber, cityParameters.PageSize);
 
 
-        }
-
-        /// <summary>
-        /// Prebroj ...
-        /// ne koristim ga...
-        /// </summary>
-        /// <returns>Return ukupan broj slogova</returns>
-        public async Task<int> GetCountAsync()
-        {
-            return await _db.Cities.CountAsync();
         }
 
         public async Task<City?> GetCityByCityID(Guid cityID)
@@ -137,6 +111,21 @@ namespace CitiesManager.Infrastructure.Repositories
             return await _db.Cities.FirstOrDefaultAsync(temp => temp.CityID == cityID);
         }
 
+        /// <summary>
+        /// Prebroj ... ne koristim ga...
+        /// </summary>
+        /// <returns>Return ukupan broj slogova</returns>
+        public async Task<int> GetCountAsync()
+        {
+            return await _db.Cities.CountAsync();
+        }
+
+        /// <summary>
+        /// NE KORISTIM GA, ali neka ostane kao primer 
+        /// Umesto njega koristim GetAllCitiesPg(CityParameters cityParameters)
+        /// </summary>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
         public async Task<List<City>> GetFilteredCities(Expression<Func<City, bool>> predicate)
         {
             _logger.LogInformation("GetFilteredCities of CitiesRepository");
@@ -146,23 +135,60 @@ namespace CitiesManager.Infrastructure.Repositories
              .ToListAsync();
         }
 
+
+        public async Task<City> AddCity(City city)
+        {
+            _db.Cities.Add(city);
+            await _db.SaveChangesAsync();
+            return city;
+
+        }
+
+        /// <summary>
+        /// Najsporniji deo, počev od Controllera,preko Servisa i samog Repository
+        /// </summary>
+        /// <param name="city"></param>
+        /// <returns></returns>
         public async Task<City> UpdateCity(City city)
         {
-            City? matchingCity = await _db.Cities.FirstOrDefaultAsync(temp => temp.CityID == city.CityID);
-            if (matchingCity == null)
-                return city;
 
-            matchingCity.CityName = city.CityName;
-            matchingCity.DateOfFoundation = city.DateOfFoundation;
-            matchingCity.CityHistory = city.CityHistory;
-            matchingCity.ZipCode = city.ZipCode;
-            matchingCity.Population = city.Population;
-            matchingCity.Description = city.Description;
+            //
+            // 04.07.2023. - Ver_1
+            // Radi, ali akko u servisu prepisujem jedan po jedan !!!
+            //
+            //_db.Cities.Update(city);
+            //int countUpdated = await _db.SaveChangesAsync();
+            //return (countUpdated > 0) ? city : null;
+            //
 
+            //
+            // 04.07.2023 - Ver_2
+            // akko koristi u servisu matchingCity = cityUpdateRequest.ToCity();
+            // NE SVIĐA MI SE jer ponovo proverava postojanje objekta, a objekat mu je već prosleđen i spreman za ažuruišku !!!
+            //
+            var trackedCity = _db.Cities.Find(city.CityID);
+
+            _db.Entry(trackedCity!).CurrentValues.SetValues(city);
 
             int countUpdated = await _db.SaveChangesAsync();
 
-            return matchingCity;
+            return (countUpdated > 0) ? city : null;
+
+
+        }
+
+        public async Task<bool> DeleteCityByCityID(Guid cityID)
+        {
+            // ova komanda ne vraća objekat 
+            // https://zzzcode.ai/answer-question
+            // In summary, the command _db.Cities.RemoveRange(_db.Cities.Where(temp => temp.CityID == cityID)) does not return any object. It is used to remove entities from the _db.Cities collection and the database. If you need to check the number of entities removed, you can use the SaveChanges method after calling RemoveRange.
+
+            _db.Cities.RemoveRange(_db.Cities.Where(temp => temp.CityID == cityID));
+
+            int rowsDeleted = await _db.SaveChangesAsync();
+
+            return rowsDeleted > 0;
+
         }
 
 

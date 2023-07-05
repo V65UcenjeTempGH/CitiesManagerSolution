@@ -2,6 +2,10 @@
 
 namespace CitiesManager.Core.Domain.Entities
 {
+    /// <summary>
+    /// U celoj priči tj Solution, nije bitna strktura tabele Cities tj ovog City modela
+    /// znam da sama struktura ne odgovara realnosti, ovo je bio samo jedan primer kako da primenim pagination+Filter+Sort i najjednostavniji CRUD u Clean Arch.
+    /// </summary>
     public class City
     {
         [Key]

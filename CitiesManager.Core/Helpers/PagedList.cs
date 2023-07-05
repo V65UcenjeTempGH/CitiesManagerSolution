@@ -2,10 +2,10 @@
 {
     /// <summary>
     /// 24.06.2023. - Korak 3
-    /// za ovaj slučaj, morao sam da instaliram NPM Microsoft.EntityFrameworkCore
+    /// za ovaj slučaj, morao sam da instaliram NPM Microsoft.EntityFrameworkCore, kjoji sam posle i "skinuo", jer sam rešio na drugi način. Pogledaj komentar "VERZIJA_3" 
     /// Pozivaju ga: 
     /// - Controller (CityController), 
-    /// - CitiesGetterService, ICitiesGetterService, 
+    /// - CitiesServiceCRUD, ICitiesServiceCRUD, 
     /// - CitiesRepository, ICitiesRepository
     /// </summary>
     public class PagedList<T> : List<T>

@@ -20,6 +20,8 @@ namespace CitiesManager.Core.DTO
         /// broj stanovnika
         /// </summary>
         public int Population { get; set; }
+
+        [Required(ErrorMessage = "ZipCode can't be blank")]
         public string? ZipCode { get; set; }
         /// <summary>
         /// napomene, opis
@@ -35,7 +37,7 @@ namespace CitiesManager.Core.DTO
         {
             return new City()
             {
-                CityID = CityID,
+                CityID = CityID,  
                 CityName = CityName,
                 DateOfFoundation = DateOfFoundation,
                 CityHistory = CityHistory,
