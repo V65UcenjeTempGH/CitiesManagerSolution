@@ -1,8 +1,7 @@
 ﻿namespace CitiesManager.Core.Helpers
 {
     /// <summary>
-    /// 24.06.2023. - Korak 3
-    /// za ovaj slučaj, morao sam da instaliram NPM Microsoft.EntityFrameworkCore, kjoji sam posle i "skinuo", jer sam rešio na drugi način. Pogledaj komentar "VERZIJA_3" 
+    /// 24.06.2023. - za ovaj slučaj, morao sam da instaliram NPM Microsoft.EntityFrameworkCore, koji sam posle i "skinuo", jer sam rešio na drugi način. Pogledaj komentar "VERZIJA_3" 
     /// Pozivaju ga: 
     /// - Controller (CityController), 
     /// - CitiesServiceCRUD, ICitiesServiceCRUD, 

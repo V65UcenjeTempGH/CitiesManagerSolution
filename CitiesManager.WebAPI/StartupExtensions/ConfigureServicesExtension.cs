@@ -30,7 +30,7 @@ namespace CitiesManager.WebAPI.StartupExtensions
             services.AddControllers();
 
             //add services into IoC container
-            // 04.07.2023. pobrisao višak servise (svaki je bio za zasebnu CRUD operaciju)
+            // 04.07.2023. - pobrisao višak servise (svaki je bio za zasebnu CRUD operaciju)
             services.AddScoped<ICitiesRepository, CitiesRepository>();
             services.AddScoped<ICitiesServiceCRUD, CitiesServiceCRUD>();
 

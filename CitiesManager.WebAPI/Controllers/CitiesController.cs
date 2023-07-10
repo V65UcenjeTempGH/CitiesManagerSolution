@@ -7,7 +7,7 @@ namespace CitiesManager.WebAPI.Controllers
 {
     /// <summary>
     /// Conntroller poziva Servis, Servis poziva Repository... između se svašta nešto poziva !!!
-    /// Akcenat na GetCitiesPg, ovo treba očistiti kroz celu Clean Arch. tj sve projekte
+    /// Akcenat na GetCitiesPg
     /// </summary>
     public class CitiesController : CustomControllerBase
     {

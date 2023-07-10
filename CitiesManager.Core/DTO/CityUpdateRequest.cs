@@ -17,7 +17,7 @@ namespace CitiesManager.Core.DTO
         public DateTime? DateOfFoundation { get; set; }
         public string? CityHistory { get; set; }
         /// <summary>
-        /// broj stanovnika
+        /// broj stanovnika grada
         /// </summary>
         public int Population { get; set; }
 

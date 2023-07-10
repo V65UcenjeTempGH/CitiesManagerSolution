@@ -8,9 +8,7 @@ using System.Threading.Tasks;
 namespace CitiesManager.Core.DTO
 {
     /// <summary>
-    /// 23.06.2023
-    /// 25.06.2023. - Korak_4
-    /// Pozivaju ga: Controlleri, Servisi, IServisi, Repository, IRepository 
+    /// 25.06.2023. - Pozivaju ga: Controlleri, Servisi, IServisi, Repository, IRepository 
     /// </summary>
     public class CityParameters : PaginationParams
     {

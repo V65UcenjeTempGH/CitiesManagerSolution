@@ -7,8 +7,7 @@ using System.Threading.Tasks;
 namespace CitiesManager.Core.Helpers
 {
     /// <summary>
-    /// 25.06.2023. - Korak_4
-    /// Poziva ga klasa HttpExtensions.AddPaginationHeader(...)
+    /// 25.06.2023. - Poziva ga klasa HttpExtensions.AddPaginationHeader(...)
     /// </summary>
     public class PaginationHeader
     {

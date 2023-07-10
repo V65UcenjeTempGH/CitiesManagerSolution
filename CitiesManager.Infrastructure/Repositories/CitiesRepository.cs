@@ -63,15 +63,51 @@ namespace CitiesManager.Infrastructure.Repositories
                 query = query.Where(c => c.Population >= minPopulation && c.Population <= maxPopulation);
             }
 
+            // 09.07.2023. - komentovao, tj ovako je bilo do 09.07.2023.
             // Sort ... Milan Jovanović
             // Izraz F-je koja prihvata city i vraća objekat tj svojstvo po kojem sortiram pod imenom keySelector
-            Expression<Func<City, object>> keySelector = cityParameters.SortColumn?.ToLower() switch
+            //Expression<Func<City, object>> keySelector = cityParameters.SortColumn?.ToLower() switch
+            //{
+            //    "cityname" => city => city.CityName!,
+            //    "zipcode" => city => city.ZipCode!,
+            //    "population" => city => city.Population,
+            //    _ => city => city.CityID
+            //};
+
+            // 09.07.2023. - Dictionary
+            // Ovo je dobro, ali može bolje
+            //
+            //Dictionary<string, Expression<Func<City, object>>> keySelectors = new Dictionary<string, Expression<Func<City, object>>>
+            //{
+            //    { "cityname", city => city.CityName! },
+            //    { "zipcode", city => city.ZipCode! },
+            //    { "population", city => city.Population },
+            //    { "default", city => city.CityID }
+            //};
+
+            //Expression<Func<City, object>> keySelector;
+            //if (!keySelectors.TryGetValue(cityParameters.SortColumn?.ToLower(), out keySelector))
+            //{
+            //    keySelector = keySelectors["default"];
+            //}
+
+
+            // 10.07.2023. 
+            // po primedbi/savetu Milana J. prebaciti Dictionary u static polje 
+            // Pogledaj: CitiesManager.Core.Helpers - public static class CityKeySelectors
+            //
+            //Expression<Func<City, object>> keySelector;
+            //if (!CityKeySelectors.KeySelectors.TryGetValue(cityParameters.SortColumn?.ToLower(), out keySelector))
+            //{
+            //    keySelector = CityKeySelectors.KeySelectors["default"];
+            //}
+
+            // ili na ovaj način... a možda može i još bolje ???
+
+            if (!CityKeySelectors.KeySelectors.TryGetValue(cityParameters.SortColumn?.ToLower(), out Expression<Func<City, object>> keySelector))
             {
-                "cityname" => city => city.CityName!,
-                "zipcode" => city => city.ZipCode!,
-                "population" => city => city.Population,
-                _ => city => city.CityID
-            };
+                keySelector = CityKeySelectors.KeySelectors["default"];
+            }
 
             if (cityParameters.SortOrder?.ToLower() == "desc")
             {
@@ -112,7 +148,7 @@ namespace CitiesManager.Infrastructure.Repositories
         }
 
         /// <summary>
-        /// Prebroj ... ne koristim ga...
+        /// Prebroj ... ne koristim ga, što ne znači da neću ubuduće ...
         /// </summary>
         /// <returns>Return ukupan broj slogova</returns>
         public async Task<int> GetCountAsync()
@@ -149,7 +185,8 @@ namespace CitiesManager.Infrastructure.Repositories
         /// </summary>
         /// <param name="city"></param>
         /// <returns></returns>
-        public async Task<City> UpdateCity(City city)
+
+        public async Task<City?> UpdateCity(City city)
         {
 
             //
@@ -166,6 +203,8 @@ namespace CitiesManager.Infrastructure.Repositories
             // akko koristi u servisu matchingCity = cityUpdateRequest.ToCity();
             // NE SVIĐA MI SE jer ponovo proverava postojanje objekta, a objekat mu je već prosleđen i spreman za ažuruišku !!!
             //
+
+
             var trackedCity = _db.Cities.Find(city.CityID);
 
             _db.Entry(trackedCity!).CurrentValues.SetValues(city);
@@ -173,6 +212,8 @@ namespace CitiesManager.Infrastructure.Repositories
             int countUpdated = await _db.SaveChangesAsync();
 
             return (countUpdated > 0) ? city : null;
+
+
 
 
         }

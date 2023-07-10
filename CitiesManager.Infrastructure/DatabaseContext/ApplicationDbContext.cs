@@ -4,6 +4,9 @@ using System.Reflection.Emit;
 
 namespace CitiesManager.WebAPI.DatabaseContext
 {
+    /// <summary>
+    /// Jednostavan primer
+    /// </summary>
     public class ApplicationDbContext : DbContext
     {
         public ApplicationDbContext(DbContextOptions options) :base(options)

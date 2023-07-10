@@ -3,7 +3,7 @@
 namespace CitiesManager.Core.DTO
 {
     /// <summary>
-    /// DTO class for adding a new city
+    /// DTO class for adding a new city ... ista napomena kao i za klasu City
     /// </summary>
     public class CityAddRequest
     {

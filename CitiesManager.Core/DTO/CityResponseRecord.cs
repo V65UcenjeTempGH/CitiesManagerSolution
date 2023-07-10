@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace CitiesManager.Core.DTO
 {
     /// <summary>
-    /// 30.06.2023. - dodao static klase:CityExtensionsRecord i CityResponseRecord, zarad automatizacije u CitiesCRUDService
+    /// 30.06.2023. - dodao static klase: CityExtensionsRecord i CityResponseRecord, zarad automatizacije u CitiesCRUDService
     /// </summary>
     public static class CityExtensionsRecord
     {

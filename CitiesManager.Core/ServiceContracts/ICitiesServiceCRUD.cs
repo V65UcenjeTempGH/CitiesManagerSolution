@@ -6,8 +6,7 @@ namespace CitiesManager.Core.ServiceContracts
     /// <summary>
     /// Ranije, do 03.07.2023. bila su 4 servisa, za svaku CRUD operaciju po jedan
     /// sada je kompletan CRUD (plus još CSV, Xlsx) u ovaj jedan servis
-    ///     
-    ///  Napomena:
+    ///  Napomena: 
     /// do ovog primera za PK kada je Oracle ili PostGreSQL u pitanju, koristio sam sequence (desktop app, nTier)
     /// </summary>
     public interface ICitiesServiceCRUD

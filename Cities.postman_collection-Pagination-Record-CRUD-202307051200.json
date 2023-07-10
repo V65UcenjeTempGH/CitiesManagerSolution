@@ -7,7 +7,7 @@
 	},
 	"item": [
 		{
-			"name": "GetAllCities",
+			"name": "GetAllCities - NE KORISTIM GA",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -21,6 +21,27 @@
 					"path": [
 						"api",
 						"Cities"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllCitiesRecord",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7202/api/Cities/GetAllCitiesRc",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7202",
+					"path": [
+						"api",
+						"Cities",
+						"GetAllCitiesRc"
 					]
 				}
 			},
@@ -58,12 +79,12 @@
 			"response": []
 		},
 		{
-			"name": "GetAllCities Pg Filter Sorting",
+			"name": "GetAllCities Pg Filter Sorting OVO !!!",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:7202/api/cities/GetCitiesPg?pageNumber=1&pageSize=2&minPopulation=1000&maxPopulation=10000000&zipcode=2&sortcolumn=population&sortorder=desc",
+					"raw": "https://localhost:7202/api/cities/GetCitiesPg?pageNumber=1&pageSize=4&minPopulation=1000&maxPopulation=10000000&sortcolumn=population&sortorder=desc",
 					"protocol": "https",
 					"host": [
 						"localhost"
@@ -81,7 +102,7 @@
 						},
 						{
 							"key": "pageSize",
-							"value": "2"
+							"value": "4"
 						},
 						{
 							"key": "minPopulation",
@@ -93,7 +114,8 @@
 						},
 						{
 							"key": "zipcode",
-							"value": "2"
+							"value": "2",
+							"disabled": true
 						},
 						{
 							"key": "cityname",
@@ -119,7 +141,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:7202/api/Cities/643b309f-d8c1-4b85-b48a-285cfdd69114",
+					"raw": "https://localhost:7202/api/Cities/ec0c8b02-8cd0-4e52-8fe8-1ec8ed895340",
 					"protocol": "https",
 					"host": [
 						"localhost"
@@ -128,7 +150,7 @@
 					"path": [
 						"api",
 						"Cities",
-						"643b309f-d8c1-4b85-b48a-285cfdd69114"
+						"ec0c8b02-8cd0-4e52-8fe8-1ec8ed895340"
 					]
 				}
 			},
@@ -156,7 +178,7 @@
 			"response": []
 		},
 		{
-			"name": "citiesXLS",
+			"name": "citiesXLS - ovo pusti preko pretraživača",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -183,7 +205,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"cityName\": \"Ниш\",\r\n    \"dateOfFoundation\": \"1500-01-01T00:00:00\",\r\n    \"cityHistory\": \"...\",\r\n    \"population\": 250000,\r\n    \"zipCode\": \"18000\",\r\n    \"description\": \"...\"\r\n}\r\n",
+					"raw": "{\r\n    \"cityName\": \"Ниш4\",\r\n    \"dateOfFoundation\": \"1500-01-01T00:00:00\",\r\n    \"cityHistory\": \"...\",\r\n    \"population\": 450004,\r\n    \"zipCode\": \"18004\",\r\n    \"description\": \"naknadno dodao\"\r\n}\r\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -200,6 +222,57 @@
 					"path": [
 						"api",
 						"Cities"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PutCity PUT",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"cityName\": \"Ниш4\",\r\n    \"dateOfFoundation\": \"1500-01-01T00:00:00\",\r\n    \"cityHistory\": \"...202307051158...\",\r\n    \"population\": 450004,\r\n    \"zipCode\": \"18004\",\r\n    \"description\": \"naknadno KORIGOVAO ... PUT ... 202307051158\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7202/api/Cities/96e3661a-e0cb-4233-bfd8-8796691327ff",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7202",
+					"path": [
+						"api",
+						"Cities",
+						"96e3661a-e0cb-4233-bfd8-8796691327ff"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Niš4",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7202/api/Cities/ec0c8b02-8cd0-4e52-8fe8-1ec8ed895340",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7202",
+					"path": [
+						"api",
+						"Cities",
+						"ec0c8b02-8cd0-4e52-8fe8-1ec8ed895340"
 					]
 				}
 			},

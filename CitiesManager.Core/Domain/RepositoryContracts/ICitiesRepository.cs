@@ -26,7 +26,6 @@ namespace CitiesManager.Core.Domain.RepositoryContracts
         Task<List<City>> GetAllCities();
 
         /// <summary>
-        /// 22.06.2023.
         /// 23.06.2023. zamenuo: pageNumber, pageSize sa CityParameters cityParameters
         /// 23.06.2023. - PagedList
         /// 03.07.2023. - CityResponseRecord
@@ -70,7 +69,8 @@ namespace CitiesManager.Core.Domain.RepositoryContracts
         /// </summary>
         /// <param name="city">City object to update</param>
         /// <returns>Returns the updated city object</returns>
-        Task<City> UpdateCity(City city);
+        Task<City?> UpdateCity(City city);
+
 
 
     }

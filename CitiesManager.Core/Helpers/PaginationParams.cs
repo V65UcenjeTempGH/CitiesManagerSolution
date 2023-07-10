@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace CitiesManager.Core.Helpers
 {
     /// <summary>
-    /// 25.06.2023. - Korak_4
+    /// 25.06.2023.
     /// Base class za npr CityParameters
     /// </summary>
     public class PaginationParams

@@ -111,8 +111,8 @@ namespace CitiesManager.Core.Services
         }
 
         /// <summary>
-        /// 03.07.2023. Record
-        /// NE KORISTIM GA, ali neka ostane kao primer 
+        /// 03.07.2023. CityResponseRecord
+        /// NE KORISTIM GA u ovakvoj situaciji, ali neka ostane kao primer, dobar je kao primer 
         /// Umesto njega koristim GetAllCitiesPg(CityParameters cityParameters)
         /// </summary>
         /// <param name="searchBy"></param>
@@ -351,7 +351,7 @@ namespace CitiesManager.Core.Services
         /// <param name="cityUpdateRequest"></param>
         /// <returns>CityResponseRecord</returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public async Task<CityResponseRecord?> UpdateCity(Guid id, CityUpdateRequest cityUpdateRequest)
+        public async Task<CityResponseRecord?> UpdateCity(Guid id, CityUpdateRequest? cityUpdateRequest)
         {
             if (cityUpdateRequest == null)
                 throw new ArgumentNullException(nameof(cityUpdateRequest));
@@ -389,8 +389,9 @@ namespace CitiesManager.Core.Services
             existingCity.CityID = (existingCity.CityID == Guid.Empty) ? id : existingCity.CityID;
 
             var updateCity = await _citiesRepository.UpdateCity(existingCity); //UPDATE
-            var responseCity = updateCity.ToCityResponseRecord();
-            return responseCity;
+            CityResponseRecord? responseCity = (updateCity is not null) ? updateCity.ToCityResponseRecord() : null;
+
+            return responseCity; 
 
 
         }

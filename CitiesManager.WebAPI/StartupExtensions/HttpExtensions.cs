@@ -4,7 +4,7 @@ using System.Text.Json;
 namespace CitiesManager.WebAPI.StartupExtensions
 {
     /// <summary>
-    /// 25.06.2023. - Poziva ga Controller, npr CityController, a on poziva klasu PaginationHeader
+    /// 25.06.2023. - Poziva ga CityController, a on poziva klasu PaginationHeader
     /// </summary>
     public static class HttpExtensions
     {
