@@ -1,0 +1,282 @@
+{
+	"info": {
+		"_postman_id": "dc1f49df-78e9-4369-8668-ee31174a1b92",
+		"name": "Cities",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18312489"
+	},
+	"item": [
+		{
+			"name": "GetAllCities - NE KORISTIM GA",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7202/api/Cities",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7202",
+					"path": [
+						"api",
+						"Cities"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllCitiesRecord",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7202/api/Cities/GetAllCitiesRc",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7202",
+					"path": [
+						"api",
+						"Cities",
+						"GetAllCitiesRc"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllCities Pg",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7202/api/cities/GetCitiesPg?pageNumber=1&pageSize=2",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7202",
+					"path": [
+						"api",
+						"cities",
+						"GetCitiesPg"
+					],
+					"query": [
+						{
+							"key": "pageNumber",
+							"value": "1"
+						},
+						{
+							"key": "pageSize",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllCities Pg Filter Sorting OVO !!!",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7202/api/cities/GetCitiesPg?pageNumber=1&pageSize=4&minPopulation=1000&maxPopulation=10000000&sortcolumn=population&sortorder=desc",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7202",
+					"path": [
+						"api",
+						"cities",
+						"GetCitiesPg"
+					],
+					"query": [
+						{
+							"key": "pageNumber",
+							"value": "1"
+						},
+						{
+							"key": "pageSize",
+							"value": "4"
+						},
+						{
+							"key": "minPopulation",
+							"value": "1000"
+						},
+						{
+							"key": "maxPopulation",
+							"value": "10000000"
+						},
+						{
+							"key": "zipcode",
+							"value": "2",
+							"disabled": true
+						},
+						{
+							"key": "cityname",
+							"value": "град",
+							"disabled": true
+						},
+						{
+							"key": "sortcolumn",
+							"value": "population"
+						},
+						{
+							"key": "sortorder",
+							"value": "desc"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetByCityID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7202/api/Cities/ec0c8b02-8cd0-4e52-8fe8-1ec8ed895340",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7202",
+					"path": [
+						"api",
+						"Cities",
+						"ec0c8b02-8cd0-4e52-8fe8-1ec8ed895340"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "citiescsv",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7202/api/cities/citiescsv",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7202",
+					"path": [
+						"api",
+						"cities",
+						"citiescsv"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "citiesXLS - ovo pusti preko pretraživača",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7202/api/cities/citiesexcel",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7202",
+					"path": [
+						"api",
+						"cities",
+						"citiesexcel"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AddCity  POST",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"cityName\": \"Ниш4\",\r\n    \"dateOfFoundation\": \"1500-01-01T00:00:00\",\r\n    \"cityHistory\": \"...\",\r\n    \"population\": 450004,\r\n    \"zipCode\": \"18004\",\r\n    \"description\": \"naknadno dodao\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7202/api/Cities",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7202",
+					"path": [
+						"api",
+						"Cities"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PutCity PUT",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"cityName\": \"Ниш4\",\r\n    \"dateOfFoundation\": \"1500-01-01T00:00:00\",\r\n    \"cityHistory\": \"...202307051158...\",\r\n    \"population\": 450004,\r\n    \"zipCode\": \"18004\",\r\n    \"description\": \"naknadno KORIGOVAO ... PUT ... 202307051158\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7202/api/Cities/96e3661a-e0cb-4233-bfd8-8796691327ff",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7202",
+					"path": [
+						"api",
+						"Cities",
+						"96e3661a-e0cb-4233-bfd8-8796691327ff"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Niš4",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7202/api/Cities/ec0c8b02-8cd0-4e52-8fe8-1ec8ed895340",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7202",
+					"path": [
+						"api",
+						"Cities",
+						"ec0c8b02-8cd0-4e52-8fe8-1ec8ed895340"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

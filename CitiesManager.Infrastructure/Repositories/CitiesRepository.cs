@@ -185,53 +185,100 @@ namespace CitiesManager.Infrastructure.Repositories
         /// </summary>
         /// <param name="city"></param>
         /// <returns></returns>
-
+        /// 11.07.2023.  
         public async Task<City?> UpdateCity(City city)
         {
 
-            //
-            // 04.07.2023. - Ver_1
-            // Radi, ali akko u servisu prepisujem jedan po jedan !!!
-            //
-            //_db.Cities.Update(city);
-            //int countUpdated = await _db.SaveChangesAsync();
-            //return (countUpdated > 0) ? city : null;
-            //
-
-            //
-            // 04.07.2023 - Ver_2
-            // akko koristi u servisu matchingCity = cityUpdateRequest.ToCity();
-            // NE SVIĐA MI SE jer ponovo proverava postojanje objekta, a objekat mu je već prosleđen i spreman za ažuruišku !!!
-            //
-
-
-            var trackedCity = _db.Cities.Find(city.CityID);
-
-            _db.Entry(trackedCity!).CurrentValues.SetValues(city);
-
-            int countUpdated = await _db.SaveChangesAsync();
+            // 11.07.2023. 
+            int countUpdated = await _db
+                .Cities
+                .Where(c => c.CityID == city.CityID)
+                .ExecuteUpdateAsync(c => c
+                        .SetProperty(c => c.CityName, city.CityName)
+                        .SetProperty(c => c.ZipCode, city.ZipCode)
+                        .SetProperty(c => c.DateOfFoundation, city.DateOfFoundation)
+                        .SetProperty(c => c.CityHistory, city.CityHistory)
+                        .SetProperty(c => c.Description, city.Description)
+                        .SetProperty(c => c.Population, city.Population)
+                        );
 
             return (countUpdated > 0) ? city : null;
 
-
-
-
         }
 
+        /// <summary>
+        /// 11.07.2023. MJ
+        /// </summary>
+        /// <param name="cityID"></param>
+        /// <returns></returns>
         public async Task<bool> DeleteCityByCityID(Guid cityID)
         {
-            // ova komanda ne vraća objekat 
-            // https://zzzcode.ai/answer-question
-            // In summary, the command _db.Cities.RemoveRange(_db.Cities.Where(temp => temp.CityID == cityID)) does not return any object. It is used to remove entities from the _db.Cities collection and the database. If you need to check the number of entities removed, you can use the SaveChanges method after calling RemoveRange.
 
-            _db.Cities.RemoveRange(_db.Cities.Where(temp => temp.CityID == cityID));
-
-            int rowsDeleted = await _db.SaveChangesAsync();
+            int rowsDeleted = await _db.Cities
+                .Where(c => c.CityID == cityID)
+                .ExecuteDeleteAsync();
 
             return rowsDeleted > 0;
 
         }
 
+        /// <summary>
+        /// 12.07.2023.
+        /// Add
+        /// Validacija da li je cityname uniq
+        /// to može da plus iskontroliše i uniq index
+        /// </summary>
+        /// <param name="cityname"></param>
+        /// <returns></returns>
+        public async Task<bool> IsCityNameUniqueAsync(string cityname)
+        {
+           var lIsUniq = !await _db.Cities.AnyAsync(c => c.CityName == cityname);
+           return lIsUniq;
+        }
 
+        /// <summary>
+        /// 12.07.2023.
+        /// Add
+        /// Validacija da li je ZipCode uniq
+        /// to može da plus iskontroliše i uniq index
+        /// </summary>
+        /// <param name="zipcode"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public async Task<bool> IsZipCodeUniqueAsync(string zipcode)
+        {
+            return !await _db.Cities.AnyAsync(c => c.ZipCode == zipcode);
+            //return lIsUniq;
+        }
+
+
+        /// <summary>
+        /// 12.07.2023.
+        /// Update
+        /// Ne može isti zipcode za drugo cytyname, tj. ne mogu dva grada da imaju isti zipcode
+        /// </summary>
+        /// <param name="zipcode"></param>
+        /// <param name="cityname"></param>
+        /// <returns></returns>
+        public async Task<bool> IsZipCodeCitynameUnique4UpdateAsync(string? zipcode, string? cityname)
+        {
+            var lIsUniq = !await _db.Cities.AnyAsync(c => c.ZipCode == zipcode && c.CityName != cityname);
+            return lIsUniq;
+        }
+
+        /// <summary>
+        /// 13.07.2023.
+        /// Update
+        /// Ne može isti Cityname za drugi ZipCode, tj. ne mogu dva grada (dva različita ZipCoda) da imaju isti naziv
+        /// </summary>
+        /// <param name="cityname"></param>
+        /// <param name="zipcode"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public async Task<bool> IsCityNameZipCodeUnique4UpdateAsync(string? cityname, string? zipcode)
+        {
+            var lIsUniq = !await _db.Cities.AnyAsync(c => c.CityName == cityname && c.ZipCode != zipcode);
+            return lIsUniq;
+        }
     }
 }

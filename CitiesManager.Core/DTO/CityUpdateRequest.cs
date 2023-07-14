@@ -5,10 +5,10 @@ namespace CitiesManager.Core.DTO
 {
     public class CityUpdateRequest
     {
-        [Required(ErrorMessage = "City ID can't be blank")]
+        //[Required(ErrorMessage = "City ID can't be blank")]
         public Guid CityID { get; set; }
 
-        [Required(ErrorMessage = "City Name can't be blank")]
+        //[Required(ErrorMessage = "City Name can't be blank")]
         public string? CityName { get; set; }
 
         /// <summary>
@@ -21,7 +21,7 @@ namespace CitiesManager.Core.DTO
         /// </summary>
         public int Population { get; set; }
 
-        [Required(ErrorMessage = "ZipCode can't be blank")]
+        //[Required(ErrorMessage = "ZipCode can't be blank")]
         public string? ZipCode { get; set; }
         /// <summary>
         /// napomene, opis

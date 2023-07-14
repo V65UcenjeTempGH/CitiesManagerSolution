@@ -10,6 +10,7 @@ using CitiesManager.Core.DTO;
 using CitiesManager.Core.Domain.Entities;
 using CitiesManager.Core.ServiceContracts;
 using CitiesManager.Core.Helpers;
+using CitiesManager.Core.Helpers.Validators;
 
 namespace CitiesManager.Core.Services
 {
@@ -282,32 +283,8 @@ namespace CitiesManager.Core.Services
                 throw new ArgumentNullException(nameof(cityID));
             }
 
-            //
-            // 27.06.2023. - primedba M.Jovanović kako na Delete tako i na Update
-            // Ovako je bilo
-            //City? city = await _citiesRepository.GetCityByCityID(cityID.Value);
-            //if (city == null)
-            //    return false;
-
-            // 03.07.2023.
-            // Ver_1:
-            // briši ga bez prethodne provere u servisu (da li i dalje  postoji cityID), ta provera je već odrađena u samom Controlleru (Controller -> Service -> Repository) - nisam siguran da je toj proveri mesto u Controlleru ???
-            // hm ... u principu može tako, jer Controller za tu namenu poziva Servis, ne "čačka" po DB direktno
-            //
             // vratiće true/false
             return await (_citiesRepository.DeleteCityByCityID(cityID.Value));
-
-            // 03.07.2023.
-            // Ver_2:
-            // provera je prebačena direktno u servis (možda ga je neko već obrisao pre mene ....), ali tada isključi proveru u Controlleru
-            //if (await _citiesRepository.GetCityByCityID(cityID.Value) is not null)
-            //{
-            //    return await _citiesRepository.DeleteCityByCityID(cityID.Value);
-            //}
-            //else
-            //{
-            //    return false;
-            //}
 
         }
 
@@ -325,8 +302,8 @@ namespace CitiesManager.Core.Services
                 throw new ArgumentNullException(nameof(cityAddRequest));
             }
 
-            //Model validation
-            //ValidationHelper.ModelValidation(cityAddRequest);
+            //Model validation - 12.07.2023.
+            //ValidationHelperH.ModelValidation(cityAddRequest);
 
             //convert cityAddRequest into City type
             City city = cityAddRequest.ToCity();
@@ -343,6 +320,7 @@ namespace CitiesManager.Core.Services
 
         /// <summary>
         /// 03.07.2023. - Uklonio CitiesUpdaterService
+        /// 11.07.2023. - drugačiji pristup, manje cimanja BP
         /// Primedba od M.Jovanovića, slična kao i za Delete
         /// Ovo mi je najsporniji deo i nisam baš siguran da je urađeno baš kako i treba ???
         /// Svaka sugestija, pomoć je dobrodošla ...
@@ -356,43 +334,16 @@ namespace CitiesManager.Core.Services
             if (cityUpdateRequest == null)
                 throw new ArgumentNullException(nameof(cityUpdateRequest));
 
-            //validation
-            //ValidationHelper.ModelValidation(cityUpdateRequest);
+            //validation - 12.07.2023.
+            //ValidationHelperH.ModelValidation(cityUpdateRequest);
 
-            // get existing city object to update
-            City? existingCity = await _citiesRepository.GetCityByCityID(id);
-            if (existingCity is null)
-            {
-                return null;
-                //throw new InvalidCityIDException("Given city id doesn't exist");
-            }
+            // 11.07.2023.
+            cityUpdateRequest.CityID = (cityUpdateRequest.CityID == Guid.Empty) ? id : cityUpdateRequest.CityID;
 
-            // 04.07.2023. Ver_1
-            //update all details - ovako radi, akko prepisujem jedan po jedan, ali mogu ofmah i ovde da uradim validaciju 
-            ///
-            //existingCity!.Description = cityUpdateRequest.Description;
-            //existingCity!.CityID = cityUpdateRequest.CityID;
-
-            // 04.07.2023. - Ver_2
-            // ovako NE RADI bez korekcije u Repository ???
-            // PAŽNJA: ovde nema validacije, bukvalno prepisuje sva polja pa kakva god bila - TO MOŽDA NIJE BAŠ DOBRO REŠENJE, ali može da se reši u DTO, u samom clientu npr Angularu ...
-            //
-            // Akko testiram preko PostMana, pazi šta prosleđuješ
-            //
-            // https://learn.microsoft.com/en-us/ef/core/change-tracking/identity-resolution
-            // Ovako slično ide poruka o grešci koja se u Repository javlja:
-            //System.InvalidOperationException: The instance of entity type 'City' cannot be tracked because another instance with the key value '{CityID: ...}' is already being tracked.When attaching existing entities, ensure that only one entity instance with a given key value is attached. !!!
-            //
-
-            // ovaj kompletan deo može da se optimizuje
-            existingCity = cityUpdateRequest.ToCity();
-            existingCity.CityID = (existingCity.CityID == Guid.Empty) ? id : existingCity.CityID;
-
-            var updateCity = await _citiesRepository.UpdateCity(existingCity); //UPDATE
+            var updateCity = await _citiesRepository.UpdateCity(cityUpdateRequest.ToCity()); //UPDATE
             CityResponseRecord? responseCity = (updateCity is not null) ? updateCity.ToCityResponseRecord() : null;
 
-            return responseCity; 
-
+            return responseCity;
 
         }
 

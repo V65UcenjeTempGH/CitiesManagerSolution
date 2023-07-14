@@ -71,6 +71,31 @@ namespace CitiesManager.Core.Domain.RepositoryContracts
         /// <returns>Returns the updated city object</returns>
         Task<City?> UpdateCity(City city);
 
+        /// <summary>
+        /// 12.07.2023. MJ
+        /// Add
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        Task<bool> IsCityNameUniqueAsync(string name);
+
+        /// <summary>
+        /// 12.07.2023. MJ
+        /// Add
+        /// </summary>
+        /// <param name="zipcode"></param>
+        /// <returns></returns>
+        Task<bool> IsZipCodeUniqueAsync(string zipcode);
+
+        /// <summary>
+        /// 13.07.2023.
+        /// Update
+        /// </summary>
+        /// <param name="zipcode"></param>
+        /// <param name="cityname"></param>
+        /// <returns></returns>
+        Task<bool> IsZipCodeCitynameUnique4UpdateAsync(string? zipcode, string? cityname);
+        Task<bool> IsCityNameZipCodeUnique4UpdateAsync(string? cityname, string? zipcode);
 
 
     }
