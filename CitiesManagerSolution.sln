@@ -9,9 +9,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{20EBEDBC-BEF
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{063E8A02-4095-45A3-B5E7-AF89CD280C26}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CitiesManager.Core", "CitiesManager.Core\CitiesManager.Core.csproj", "{71FEE89A-AB48-45DF-A1A1-A7404CA45381}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CitiesManager.Core", "CitiesManager.Core\CitiesManager.Core.csproj", "{71FEE89A-AB48-45DF-A1A1-A7404CA45381}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CitiesManager.Infrastructure", "CitiesManager.Infrastructure\CitiesManager.Infrastructure.csproj", "{2CF08D22-54CF-43C4-AB63-E9BB8BFBB736}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CitiesManager.Infrastructure", "CitiesManager.Infrastructure\CitiesManager.Infrastructure.csproj", "{2CF08D22-54CF-43C4-AB63-E9BB8BFBB736}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

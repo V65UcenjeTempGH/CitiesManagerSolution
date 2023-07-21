@@ -1,14 +1,13 @@
 ﻿using CitiesManager.Core.Domain.RepositoryContracts;
 using CitiesManager.Core.DTO;
 using FluentValidation;
-using System.Reflection.Emit;
 
 namespace CitiesManager.Core.Helpers.Validators
 {
     /// <summary>
     /// 12.07.2023.
-    /// Instalirao package: FluentValidation.DependencyInjectionExtensions ... uninstall
-    ///                     FluentValidation.AspNetCore ... ovo ostavio
+    /// Instalirao package: FluentValidation.DependencyInjectionExtensions
+    ///                     FluentValidation.AspNetCore
     /// </summary>
     public sealed class CityUpdateValidator : AbstractValidator<CityUpdateRequest>
     {

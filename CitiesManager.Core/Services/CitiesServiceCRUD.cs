@@ -11,6 +11,7 @@ using CitiesManager.Core.Domain.Entities;
 using CitiesManager.Core.ServiceContracts;
 using CitiesManager.Core.Helpers;
 using CitiesManager.Core.Helpers.Validators;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
 
 namespace CitiesManager.Core.Services
 {
@@ -268,6 +269,30 @@ namespace CitiesManager.Core.Services
 
             memoryStream.Position = 0;
             return memoryStream;
+        }
+
+
+        /// <summary>
+        /// 15.07.2023.
+        /// </summary>
+        /// <returns></returns>
+        public async Task CitiesExcelGeneric()
+        {
+
+            List<CityResponseRecord> cities = await GetAllCitiesRc();
+
+            // Generisanje imena eksel fajla
+            string mojNaslovXlsx = "Gradovi";
+            
+            string imefajlaTimestamp = mojNaslovXlsx+"_"+ DateTime.Now.ToString("yyyyMMddHHmmss")+".xlsx";
+            
+            string putanjaDoExcela = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads",imefajlaTimestamp);
+
+            string sheetName = "Cities";
+
+            ExportModelToExcelGeneric.ExportToExcel(cities, putanjaDoExcela, sheetName);
+
+            
         }
 
         /// <summary>

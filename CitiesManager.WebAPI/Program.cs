@@ -1,8 +1,14 @@
+using CitiesManager.Core.Domain.RepositoryContracts;
+using CitiesManager.Core.DTO;
+using CitiesManager.Core.Helpers.Validators;
+using CitiesManager.WebAPI.Middleware;
 using CitiesManager.WebAPI.StartupExtensions;
+using Microsoft.AspNetCore.Builder;
 using Serilog;
 
+
 //
-// Ovo je jednostavan primer app gde sam pokušao primenu Clean Arch. s tim da sam akcenat stavio na: Pafination + Filter + Sort
+// Ovo je jednostavan primer app gde sam pokušao primenu Clean Arch. s tim da sam akcenat stavio na: Pagination + Filter + Sort
 // Nisam obuhvatio u ovom momentu Auth., Autent., JWT ...
 // To kasnije, kada razrešim pitanje Paginacije kroz Clean Arch.
 //
@@ -26,7 +32,7 @@ builder.Host.UseSerilog((HostBuilderContext context, IServiceProvider services, 
 builder.Services.ConfigureServices(builder.Configuration);
 
 
-var app = builder.Build();
+WebApplication app = builder.Build();
 
 // Configure the HTTP request pipeline.
 
@@ -34,8 +40,23 @@ app.UseHsts();                          // 18.06.2023.
 
 app.UseHttpsRedirection();
 
+// 20.07.2023.
+// Aktiviraj generièki IMiddleware za POST metodu
+app.UseWhen(context => context.Request.Method == HttpMethods.Post, appBuilder =>
+{
+    appBuilder.UseMiddleware<ValidatorMiddleware<CityAddRequest>>();
+});
+
+// Aktiviraj generièki IMiddleware za PUT metodu
+app.UseWhen(context => context.Request.Method == HttpMethods.Put, appBuilder =>
+{
+    appBuilder.UseMiddleware<ValidatorMiddleware<CityUpdateRequest>>();
+});
+
 app.UseAuthorization();
 
 app.MapControllers();
 
 app.Run();
+
+ 

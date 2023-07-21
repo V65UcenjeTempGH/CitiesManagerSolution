@@ -2,15 +2,12 @@
 using CitiesManager.Core.ServiceContracts;
 using CitiesManager.Core.DTO;
 using CitiesManager.WebAPI.StartupExtensions;
-using FluentValidation;
-using Microsoft.AspNetCore.Http.HttpResults;
-using CitiesManager.Core.Helpers.Validators;
-using CitiesManager.Core.Domain.RepositoryContracts;
 
 namespace CitiesManager.WebAPI.Controllers
 {
     /// <summary>
     /// Conntroller poziva Servis, Servis poziva Repository... između se svašta nešto poziva !!!
+    /// 15.07.2023. - poziv i Validacije
     /// Akcenat na GetCitiesPg
     /// </summary>
     public class CitiesController : CustomControllerBase
@@ -20,31 +17,18 @@ namespace CitiesManager.WebAPI.Controllers
         private readonly ICitiesServiceCRUD _citiesServiceCRUD;
         private readonly ILogger<CitiesController> _logger;
 
-        private readonly CityAddValidator _validationAddRules;             // 12.07.2023.
-        private readonly CityUpdateValidator _validationUpdateRules;    // 13.07.2023.
-
         // 14.07.2023. Put TEST Ver 2
         //private readonly CityBOValidaros _cityBOValidators;
 
-        //constructor
         /// <summary>
-        /// 12.07.2023.  CityAddValidator validationRules 
-        /// 12.07.2023.  CityUpdateValidator validationUpdateRules 
-        /// Napomena:
-        /// šta god da pozevem, ne samo Post i Put, nego i Get - poziva Validicaje ???
+        /// 15.07.2023. - korekcija, Pogledaj komentare na POST i PUT
         /// </summary>
         /// <param name="citiesServiceCRUD"></param>
         /// <param name="logger"></param>
-        /// <param name="validationAddRules"> za Add - preimenuj u npr. validationAddRules</param>
-        /// <param name="validationUpdateRules">za Update</param>
-        /// 
-        //public CitiesController(ICitiesServiceCRUD citiesServiceCRUD, ILogger<CitiesController> logger, CityBOValidaros cityBOValidators)
-        public CitiesController(ICitiesServiceCRUD citiesServiceCRUD, ILogger<CitiesController> logger, CityAddValidator validationAddRules, CityUpdateValidator validationUpdateRules)
+        public CitiesController(ICitiesServiceCRUD citiesServiceCRUD, ILogger<CitiesController> logger)
         {
             _citiesServiceCRUD = citiesServiceCRUD;
             _logger = logger;
-            _validationAddRules = validationAddRules;           // 12.07.2023.  Post
-            _validationUpdateRules = validationUpdateRules;     // 13.07.2023.  Put
             //_cityBOValidators = cityBOValidators;             // 14.07.2023.  Put TEST Ver 2
         }
 
@@ -121,11 +105,14 @@ namespace CitiesManager.WebAPI.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         /// <summary>
         /// 03.07.2023. - CityResponseRecord
-        /// 12.07.2023. - var validationResult 
+        /// 15.07.2023. - korigovan poziv Validacije
+        /// 17.07.2023. - sklonio validaciju
         /// </summary>
         /// <param name="cityRequest"></param>
+        /// <param name="validator"></param>
         /// <returns></returns>
         [HttpPost]
+        //public async Task<ActionResult<CityResponseRecord>> PostCity(CityAddRequest cityRequest, IValidator<CityAddRequest> validator)
         public async Task<ActionResult<CityResponseRecord>> PostCity(CityAddRequest cityRequest)
         {
 
@@ -134,12 +121,24 @@ namespace CitiesManager.WebAPI.Controllers
                 return Problem("Entity set 'CityAddRequest'  is null.");
             }
 
-            // Validacija
-            var validationResult = await _validationAddRules.ValidateAsync(cityRequest);
-            if (!validationResult.IsValid)
-            {
-                return BadRequest(validationResult.ToDictionary());
-            }
+            // 17.07.2023. - komentovao validaciju
+            //// 15.07.2023. - korekcija validacije
+            //ValidationResult result = await validator.ValidateAsync(cityRequest);
+            //if (!result.IsValid)
+            //{
+            //    return BadRequest(result.ToDictionary());
+
+            //    //var validationProblemDetails = new ValidationProblemDetails(result.ToDictionary())
+            //    //{
+            //    //    Title = "Validation Error",
+            //    //    Status = 400,
+            //    //    Detail = "One or more validation errors occurred."
+            //    //};
+
+            //    //return BadRequest(validationProblemDetails);
+            //    //return ValidationProblem((ValidationProblemDetails)result.ToDictionary());
+            //    //return Results.ValidationProblem(result.ToDictionary()); // grešku javlja
+            //}
 
             //call the service method
             CityResponseRecord cityResponse = await _citiesServiceCRUD.AddCity(cityRequest);
@@ -151,17 +150,18 @@ namespace CitiesManager.WebAPI.Controllers
 
         // PUT: api/Cities/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        /// 15.07.2023. - korigovan poziv Validacije
+        /// 17.07.2023. - sklonio validaciju
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="cityRequest"></param>
+        /// <param name="validator"></param>
+        /// <returns></returns>
         [HttpPut("{id}")]
-        public async Task<ActionResult<CityResponseRecord>> PutCity(Guid id,CityUpdateRequest cityRequest)
+        //public async Task<ActionResult<CityResponseRecord>> PutCity(Guid id, CityUpdateRequest cityRequest,  IValidator<CityUpdateRequest> validator)
+        public async Task<ActionResult<CityResponseRecord>> PutCity(Guid id, CityUpdateRequest cityRequest)
         {
-            // Validacija
-            var validationResult = await _validationUpdateRules.ValidateAsync(cityRequest);
-            if (!validationResult.IsValid)
-            {
-                return BadRequest(validationResult.ToDictionary());
-                //return BadRequest(validationResult.Errors);
-            }
-
 
             // 14.07.2023. test Ver_2 jedan Bo
             //bool vresult = await _cityBOValidators.IsCityUpdateValid(cityRequest);
@@ -169,7 +169,6 @@ namespace CitiesManager.WebAPI.Controllers
             //{
             //   return BadRequest(_cityBOValidators.Errors);
             //}
-
 
             // UPDATE - 04.07.2023. dodao id
             var updatedCity = await _citiesServiceCRUD.UpdateCity(id, cityRequest);
@@ -215,6 +214,13 @@ namespace CitiesManager.WebAPI.Controllers
             return File(memoryStream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "cities.xlsx");
         }
 
+        // 15.07.2023.
+        [HttpGet("CitiesExcelGeneric")]
+        public async Task<IActionResult> CitiesExcelGeneric()
+        {
+            await _citiesServiceCRUD.CitiesExcelGeneric();
+            return Ok();
+        }
 
         /// <summary>
         /// Ne koristim trenutno, ne treba mi bar za sada 

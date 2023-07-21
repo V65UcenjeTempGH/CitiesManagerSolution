@@ -77,5 +77,11 @@ namespace CitiesManager.Core.ServiceContracts
         /// <returns>CityResponseRecord</returns>
         Task<CityResponseRecord?> UpdateCity(Guid id, CityUpdateRequest? cityUpdateRequest);
 
+        /// <summary>
+        /// 15.07.2023.
+        /// </summary>
+        /// <returns></returns>
+        Task CitiesExcelGeneric();
+
     }
 }
