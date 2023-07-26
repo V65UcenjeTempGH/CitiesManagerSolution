@@ -7,9 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using CitiesManager.Core.Helpers.Validators;            // 12.07.2023.
 using FluentValidation;
 using CitiesManager.Core.DTO;                           // 15.07.2023.
-using FluentValidation.AspNetCore;
 using CitiesManager.WebAPI.Middleware;
-using System;
 
 
 namespace CitiesManager.WebAPI.StartupExtensions
@@ -48,6 +46,7 @@ namespace CitiesManager.WebAPI.StartupExtensions
             // Register the middleware
             services.AddTransient(typeof(ValidatorMiddleware<CityAddRequest>));
             services.AddTransient(typeof(ValidatorMiddleware<CityUpdateRequest>));
+
             // Other service registrations...
 
             services.AddDbContext<ApplicationDbContext>(options =>
@@ -60,7 +59,6 @@ namespace CitiesManager.WebAPI.StartupExtensions
             {
                 options.LoggingFields = Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.RequestProperties | Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.ResponsePropertiesAndHeaders;
             });
-
 
             return services;
         }
