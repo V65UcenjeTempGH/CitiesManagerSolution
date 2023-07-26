@@ -51,6 +51,37 @@ app.UseWhen(context => context.Request.Method == HttpMethods.Put, appBuilder =>
     appBuilder.UseMiddleware<ValidatorMiddleware<CityUpdateRequest>>();
 });
 
+
+//
+// Npr. kada napišem nove FluentValidatore za druge modelDTO, npr. validatore:
+// DrzavaAddValidator, DrzavaUpdateValidator, CustomerAddValidator, CustomerUpdateValidator
+// ne deluje bi baš "elegantno" da ih nabrajam ovde, jedan ispod drugog !!!
+//
+// Aktiviraj generièki IMiddleware za POST metodu za Drzava model
+//app.UseWhen(context => context.Request.Method == HttpMethods.Post, appBuilder =>
+//{
+//    appBuilder.UseMiddleware<ValidatorMiddleware<DrzavaAddRequest>>();
+//});
+
+// Aktiviraj generièki IMiddleware za PUT metodu za Drzava model
+//app.UseWhen(context => context.Request.Method == HttpMethods.Put, appBuilder =>
+//{
+//    appBuilder.UseMiddleware<ValidatorMiddleware<DrzavaUpdateRequest>>();
+//});
+
+// Aktiviraj generièki IMiddleware za POST metodu za Customer model
+//app.UseWhen(context => context.Request.Method == HttpMethods.Post, appBuilder =>
+//{
+//    appBuilder.UseMiddleware<ValidatorMiddleware<CustomerAddRequest>>();
+//});
+
+// Aktiviraj generièki IMiddleware za PUT metodu za Customer model
+//app.UseWhen(context => context.Request.Method == HttpMethods.Put, appBuilder =>
+//{
+//    appBuilder.UseMiddleware<ValidatorMiddleware<CustomerUpdateRequest>>();
+//});
+//
+
 app.Run();
 
  
