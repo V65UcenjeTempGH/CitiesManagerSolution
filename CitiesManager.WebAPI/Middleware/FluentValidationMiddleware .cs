@@ -1,14 +1,16 @@
 ﻿using FluentValidation;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+//using Newtonsoft.Json;
 using System.Net;
+
+using System.Text.Json;
+
 
 namespace CitiesManager.WebAPI.Middleware
 {
     /// <summary>
     /// 20.07.2023.
-    /// ... && _validator is CityUpdateValidator) 
-    /// ... && _validator is CityAddValidator)
-    /// NE TREBA !!!
     /// </summary>
     /// <typeparam name="TModel"></typeparam>
     public class ValidatorMiddleware<TModel> : IMiddleware where TModel : class
@@ -25,10 +27,32 @@ namespace CitiesManager.WebAPI.Middleware
 
             if (context.Request.Method == HttpMethods.Post || context.Request.Method == HttpMethods.Put)
             {
-                // POST ili PUT
+                // POST or PUT
                 // Validate the request body
+
+                //using var reader = new StreamReader(context.Request.Body);
+                //var requestBody = await reader.ReadToEndAsync();
+
                 var requestBody = await new StreamReader(context.Request.Body).ReadToEndAsync();
-                TModel? model = JsonConvert.DeserializeObject<TModel>(requestBody);
+
+                //if (!IsValidJson(requestBody))
+                //{
+                //    context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                //    context.Response.ContentType = "application/json";
+                //    await context.Response.WriteAsync("Invalid JSON in the request body.");
+                //    return;
+                //}
+
+                if (string.IsNullOrEmpty(requestBody))
+                {
+                    context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    context.Response.ContentType = "application/json";
+                    await context.Response.WriteAsync("Request body is empty.");
+                    return;
+                }
+
+                TModel? model = JsonConvert.DeserializeObject<TModel?>(requestBody);
+
                 var validationResult = await _validator.ValidateAsync(model);
 
                 if (!validationResult.IsValid)
@@ -40,10 +64,32 @@ namespace CitiesManager.WebAPI.Middleware
 
                     return;
                 }
+
+                Console.WriteLine("Request Body: " + requestBody);
+                Console.WriteLine("Deserialized Model: " + JsonConvert.SerializeObject(model));
+                Console.WriteLine("Model: " + model);
+
+
             }
 
             await next(context);
+
         }
+
+        //private bool IsValidJson(string json)
+        //{
+        //    try
+        //    {
+        //        JToken.Parse(json);
+        //        return true;
+        //    }
+        //    catch (JsonReaderException)
+        //    {
+        //        return false;
+        //    }
+        //}
     }
+
+    
 
 }

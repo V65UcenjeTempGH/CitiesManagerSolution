@@ -1,8 +1,15 @@
 ﻿using CitiesManager.Core.Domain.Entities;
+using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 
 namespace CitiesManager.Core.DTO
 {
+    /// <summary>
+    /// Validation has been moved to:
+    /// CityUpdateValidator and CityAddValidator
+    /// Note: 
+    /// this is only an example and does not correspond to a real data structure
+    /// </summary>
     public class CityUpdateRequest
     {
         //[Required(ErrorMessage = "City ID can't be blank")]
@@ -11,9 +18,6 @@ namespace CitiesManager.Core.DTO
         //[Required(ErrorMessage = "City Name can't be blank")]
         public string? CityName { get; set; }
 
-        /// <summary>
-        /// Datum osnivanja
-        /// </summary>
         public DateTime? DateOfFoundation { get; set; }
         public string? CityHistory { get; set; }
         /// <summary>
