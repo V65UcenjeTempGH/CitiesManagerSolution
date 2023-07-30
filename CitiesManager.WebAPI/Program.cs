@@ -29,44 +29,58 @@ WebApplication app = builder.Build();
 
 // Configure the HTTP request pipeline.
 
+app.UseHsts();                          // 18.06.2023.
+
+app.UseHttpsRedirection();
+
+app.UseAuthorization();
+
+app.MapControllers();
+
+
 // 20.07.2023.
-// Where ie in which part of the code should the activation of the generic be located IMiddleware 
-//
-// Activate the generic IMiddleware for the POST method
-app.UseWhen(context => context.Request.Method == HttpMethods.Post, async appBuilder =>
+// Aktiviraj generièki IMiddleware za POST metodu
+app.UseWhen(context => context.Request.Method == HttpMethods.Post, appBuilder =>
 {
     appBuilder.UseMiddleware<ValidatorMiddleware<CityAddRequest>>();
 });
 
-// Activate the generic IMiddleware for the PUT method
+// Aktiviraj generièki IMiddleware za PUT metodu
 app.UseWhen(context => context.Request.Method == HttpMethods.Put, appBuilder =>
 {
     appBuilder.UseMiddleware<ValidatorMiddleware<CityUpdateRequest>>();
 });
 
-app.UseHsts();                          // 18.06.2023.
 
-app.UseHttpsRedirection();
-
-app.UseStaticFiles();                   // 27.07.2023.
-app.UseRouting();                       // 27.07.2023.
-
-app.UseAuthorization();
-
-//// 20.07.2023.
-//// Activate the generic IMiddleware for the POST method
-//app.UseWhen(context => context.Request.Method == HttpMethods.Post, async appBuilder =>
+//
+// Npr. kada napišem nove FluentValidatore za druge modelDTO, npr. validatore:
+// DrzavaAddValidator, DrzavaUpdateValidator, CustomerAddValidator, CustomerUpdateValidator
+// ne deluje bi baš "elegantno" da ih nabrajam ovde, jedan ispod drugog !!!
+//
+// Aktiviraj generièki IMiddleware za POST metodu za Drzava model
+//app.UseWhen(context => context.Request.Method == HttpMethods.Post, appBuilder =>
 //{
-//    appBuilder.UseMiddleware<ValidatorMiddleware<CityAddRequest>>();
+//    appBuilder.UseMiddleware<ValidatorMiddleware<DrzavaAddRequest>>();
 //});
 
-//// Activate the generic IMiddleware for the PUT method
+// Aktiviraj generièki IMiddleware za PUT metodu za Drzava model
 //app.UseWhen(context => context.Request.Method == HttpMethods.Put, appBuilder =>
 //{
-//    appBuilder.UseMiddleware<ValidatorMiddleware<CityUpdateRequest>>();
+//    appBuilder.UseMiddleware<ValidatorMiddleware<DrzavaUpdateRequest>>();
 //});
 
-app.MapControllers();
+// Aktiviraj generièki IMiddleware za POST metodu za Customer model
+//app.UseWhen(context => context.Request.Method == HttpMethods.Post, appBuilder =>
+//{
+//    appBuilder.UseMiddleware<ValidatorMiddleware<CustomerAddRequest>>();
+//});
+
+// Aktiviraj generièki IMiddleware za PUT metodu za Customer model
+//app.UseWhen(context => context.Request.Method == HttpMethods.Put, appBuilder =>
+//{
+//    appBuilder.UseMiddleware<ValidatorMiddleware<CustomerUpdateRequest>>();
+//});
+//
 
 app.Run();
 

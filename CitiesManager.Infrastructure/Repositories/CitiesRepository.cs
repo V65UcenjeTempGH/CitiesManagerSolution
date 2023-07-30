@@ -64,7 +64,7 @@ namespace CitiesManager.Infrastructure.Repositories
             }
 
             // 09.07.2023. - komentovao, tj ovako je bilo do 09.07.2023.
-            // Sort ... 
+            // Sort ... Milan Jovanović
             // Izraz F-je koja prihvata city i vraća objekat tj svojstvo po kojem sortiram pod imenom keySelector
             //Expression<Func<City, object>> keySelector = cityParameters.SortColumn?.ToLower() switch
             //{
@@ -93,7 +93,7 @@ namespace CitiesManager.Infrastructure.Repositories
 
 
             // 10.07.2023. 
-            // po primedbi/savetu prebaciti Dictionary u static polje 
+            // po primedbi/savetu Milana J. prebaciti Dictionary u static polje 
             // Pogledaj: CitiesManager.Core.Helpers - public static class CityKeySelectors
             //
             //Expression<Func<City, object>> keySelector;
@@ -207,7 +207,7 @@ namespace CitiesManager.Infrastructure.Repositories
         }
 
         /// <summary>
-        /// 11.07.2023. 
+        /// 11.07.2023. MJ
         /// </summary>
         /// <param name="cityID"></param>
         /// <returns></returns>

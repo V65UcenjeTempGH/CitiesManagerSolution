@@ -31,6 +31,7 @@ namespace CitiesManager.Core.DTO
 
     /// <summary>
     /// 29.06.2023. 
+    /// Milan Jovanović 
     /// Record za DTO
     /// </summary>
     /// <param name="CityID"></param>

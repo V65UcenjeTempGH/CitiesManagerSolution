@@ -72,7 +72,7 @@ namespace CitiesManager.Core.Domain.RepositoryContracts
         Task<City?> UpdateCity(City city);
 
         /// <summary>
-        /// 12.07.2023.
+        /// 12.07.2023. MJ
         /// Add
         /// </summary>
         /// <param name="name"></param>
@@ -80,7 +80,7 @@ namespace CitiesManager.Core.Domain.RepositoryContracts
         Task<bool> IsCityNameUniqueAsync(string name);
 
         /// <summary>
-        /// 12.07.2023. 
+        /// 12.07.2023. MJ
         /// Add
         /// </summary>
         /// <param name="zipcode"></param>

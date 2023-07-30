@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 namespace CitiesManager.Core.Helpers
 {
     /// <summary>
-    /// 10.07.2023.
+    /// 10.07.2023. po primedbi Milana J.
     /// Pogledaj CitiesRepository ...
     /// </summary>
     public static class CityKeySelectors

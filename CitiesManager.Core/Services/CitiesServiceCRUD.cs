@@ -44,7 +44,7 @@ namespace CitiesManager.Core.Services
 
 
         /// <summary>
-        /// 29.06.2023. - Umesto CityResponse da probam sa CityresponseRecord
+        /// 29.06.2023. - Milan Jovanović -Umesto CityResponse da probam sa CityresponseRecord
         /// </summary>
         /// <returns></returns>
         public virtual async Task<List<CityResponseRecord>> GetAllCitiesRc()
@@ -70,7 +70,7 @@ namespace CitiesManager.Core.Services
             //return cities
             // .Select(temp => temp.ToCityResponseRecord()).ToList();
 
-            // 01.07.2023.
+            // 01.07.2023. - Milan Jovanović
             return cities.Select(CityExtensionsRecord.ToCityResponseRecord).ToList();
 
         }
@@ -346,7 +346,7 @@ namespace CitiesManager.Core.Services
         /// <summary>
         /// 03.07.2023. - Uklonio CitiesUpdaterService
         /// 11.07.2023. - drugačiji pristup, manje cimanja BP
-        /// Primedba slična kao i za Delete
+        /// Primedba od M.Jovanovića, slična kao i za Delete
         /// Ovo mi je najsporniji deo i nisam baš siguran da je urađeno baš kako i treba ???
         /// Svaka sugestija, pomoć je dobrodošla ...
         /// </summary>

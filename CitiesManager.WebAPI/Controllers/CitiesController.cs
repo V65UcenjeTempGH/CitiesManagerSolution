@@ -6,7 +6,9 @@ using CitiesManager.WebAPI.StartupExtensions;
 namespace CitiesManager.WebAPI.Controllers
 {
     /// <summary>
-    /// The Controller calls the Service, the Service calls the Repository...
+    /// Conntroller poziva Servis, Servis poziva Repository... između se svašta nešto poziva !!!
+    /// 15.07.2023. - poziv i Validacije
+    /// Akcenat na GetCitiesPg
     /// </summary>
     public class CitiesController : CustomControllerBase
     {
@@ -19,7 +21,7 @@ namespace CitiesManager.WebAPI.Controllers
         //private readonly CityBOValidaros _cityBOValidators;
 
         /// <summary>
-        /// 15.07.2023. - corrections, see comments on POST and PUT !!!
+        /// 15.07.2023. - korekcija, Pogledaj komentare na POST i PUT
         /// </summary>
         /// <param name="citiesServiceCRUD"></param>
         /// <param name="logger"></param>
@@ -27,14 +29,14 @@ namespace CitiesManager.WebAPI.Controllers
         {
             _citiesServiceCRUD = citiesServiceCRUD;
             _logger = logger;
-            //_cityBOValidators = cityBOValidators;     // 14.07.2023.  Put TEST Ver 2
+            //_cityBOValidators = cityBOValidators;             // 14.07.2023.  Put TEST Ver 2
         }
 
 
         // GET: api/Cities
         /// <summary>
         /// 29.06.2023. - CityResponseRecord
-        /// Instead of this call, uses GetCitiesPg
+        /// Umesto ovog poziva, koristi GetCitiesPg
         /// </summary>
         /// <returns></returns>
         [HttpGet("GetAllCitiesRc")]
@@ -67,7 +69,7 @@ namespace CitiesManager.WebAPI.Controllers
                 return NotFound();
             }
 
-            // 25.04.2023. Korak_4 - class in WebAPI-StartupExtension folder 
+            // 25.04.2023. Korak_4 - klasa u WebAPI-StartupExtension folder 
             Response.AddPaginationHeader(cities.CurrentPage, cities.PageSize,
                 cities.TotalCount, cities.TotalPages, cities.HasNext, cities.HasPrevious);
 
@@ -103,17 +105,8 @@ namespace CitiesManager.WebAPI.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         /// <summary>
         /// 03.07.2023. - CityResponseRecord
-        /// 15.07.2023. - corrected call to Validation
-        /// 17.07.2023. - removed the validation
-        /// 20.07.2023. - Instead that, I'm trying to use the generic IMiddleware class
-        /// Take a look at next classes:
-        /// FluentValidationMiddleware.cs:
-        /// - ValidatorMiddleware<TModel> : IMiddleware where TModel : class 
-        /// CityUpdateValidator.cs
-        /// CityAddValidator.cs
-        /// Register the validators and middleware:
-        /// - static class ConfigureServicesExtension
-        /// - Program.cs ... app.UseWhen(...)
+        /// 15.07.2023. - korigovan poziv Validacije
+        /// 17.07.2023. - sklonio validaciju
         /// </summary>
         /// <param name="cityRequest"></param>
         /// <param name="validator"></param>
@@ -128,8 +121,8 @@ namespace CitiesManager.WebAPI.Controllers
                 return Problem("Entity set 'CityAddRequest'  is null.");
             }
 
-            //// 15.07.2023. - Corrected call to Validation
-            //// 17.07.2023. - Comment the validation
+            // 17.07.2023. - komentovao validaciju
+            //// 15.07.2023. - korekcija validacije
             //ValidationResult result = await validator.ValidateAsync(cityRequest);
             //if (!result.IsValid)
             //{
@@ -158,34 +151,26 @@ namespace CitiesManager.WebAPI.Controllers
         // PUT: api/Cities/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         /// <summary>
-        /// 15.07.2023. - corrected call to Validation
-        /// 17.07.2023. - removed the validation
-        /// 20.07.2023. - Instead that, I'm trying to use the generic IMiddleware class
-        /// Take a look at next classes:
-        /// FluentValidationMiddleware.cs:
-        /// - ValidatorMiddleware<TModel> : IMiddleware where TModel : class 
-        /// CityUpdateValidator.cs
-        /// CityAddValidator.cs
-        /// Register the validators and middleware:
-        /// - static class ConfigureServicesExtension
-        /// - Program.cs ... app.UseWhen(...)
+        /// 15.07.2023. - korigovan poziv Validacije
+        /// 17.07.2023. - sklonio validaciju
         /// </summary>
         /// <param name="id"></param>
         /// <param name="cityRequest"></param>
         /// <param name="validator"></param>
         /// <returns></returns>
-        //public async Task<ActionResult<CityResponseRecord>> PutCity(Guid id, CityUpdateRequest cityRequest,  IValidator<CityUpdateRequest> validator)
         [HttpPut("{id}")]
-        public async Task<ActionResult<CityResponseRecord>> PutCity(Guid id, [FromBody] CityUpdateRequest cityRequest)
+        //public async Task<ActionResult<CityResponseRecord>> PutCity(Guid id, CityUpdateRequest cityRequest,  IValidator<CityUpdateRequest> validator)
+        public async Task<ActionResult<CityResponseRecord>> PutCity(Guid id, CityUpdateRequest cityRequest)
         {
 
-            // 28.07.2023.
-            if (cityRequest == null)
-            {
-                return BadRequest("JSON tokeni nisu prisutni u zahtevu.");
-            }
-           
-            // UPDATE - 04.07.2023. Add id
+            // 14.07.2023. test Ver_2 jedan Bo
+            //bool vresult = await _cityBOValidators.IsCityUpdateValid(cityRequest);
+            //if (!vresult )
+            //{
+            //   return BadRequest(_cityBOValidators.Errors);
+            //}
+
+            // UPDATE - 04.07.2023. dodao id
             var updatedCity = await _citiesServiceCRUD.UpdateCity(id, cityRequest);
 
             if (updatedCity is null)
@@ -203,7 +188,7 @@ namespace CitiesManager.WebAPI.Controllers
         public async Task<IActionResult> DeleteCity(Guid id)
         {
 
-            // 11.07.2023. 
+            // 11.07.2023. - MJ
             if (await _citiesServiceCRUD.DeleteCity(id))
             {
                 return NoContent();
@@ -238,7 +223,7 @@ namespace CitiesManager.WebAPI.Controllers
         }
 
         /// <summary>
-        /// I'm not using right now
+        /// Ne koristim trenutno, ne treba mi bar za sada 
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -249,8 +234,8 @@ namespace CitiesManager.WebAPI.Controllers
 
 
         //
-        // I'm not using right now
-        // maybe Angular to create the PDF, or maybe Asp.net Core itself to create it ???
+        // Ne koristim ga, nije dobro... moram naći drugo rešenje ???
+        // možda da Angular kreira PDF, a možda može i sam Asp.net Core da ga kreira ???
         //
         //[HttpGet("CitiesPDF")]
         //public async Task<IActionResult> CitiesPDF()

@@ -18,9 +18,11 @@ namespace CitiesManager.Core.DTO
         public int MaxPopulation { get; set; } //   = 10000000;      // 10M
 
         /// <summary>
+        /// Milan Jovanović
         /// </summary>
         public string? SortColumn { get; set; }
         /// <summary>
+        /// Milan Jovanović
         /// </summary>
         public string? SortOrder { get; set; }
 
