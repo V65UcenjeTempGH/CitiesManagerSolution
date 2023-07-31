@@ -1,10 +1,6 @@
 ﻿using FluentValidation;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-//using Newtonsoft.Json;
 using System.Net;
-
-using System.Text.Json;
 
 
 namespace CitiesManager.WebAPI.Middleware
@@ -30,28 +26,48 @@ namespace CitiesManager.WebAPI.Middleware
                 // POST or PUT
                 // Validate the request body
 
-                //using var reader = new StreamReader(context.Request.Body);
-                //var requestBody = await reader.ReadToEndAsync();
+                ////using var reader = new StreamReader(context.Request.Body);
+                ////var requestBody = await reader.ReadToEndAsync();
 
-                var requestBody = await new StreamReader(context.Request.Body).ReadToEndAsync();
+                //// 31.07.2023.  Ver_1
+                //// Omogući buffering za request body
+                //context.Request.EnableBuffering();
 
-                //if (!IsValidJson(requestBody))
+                //var requestBody = await new StreamReader(context.Request.Body).ReadToEndAsync();
+
+                //// 31.07.2023.
+                //// Resetuj pozicije streama na početak
+                //context.Request.Body.Position = 0;
+
+                ////if (!IsValidJson(requestBody))
+                ////{
+                ////    context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                ////    context.Response.ContentType = "application/json";
+                ////    await context.Response.WriteAsync("Invalid JSON in the request body.");
+                ////    return;
+                ////}
+
+                //if (string.IsNullOrEmpty(requestBody))
                 //{
                 //    context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 //    context.Response.ContentType = "application/json";
-                //    await context.Response.WriteAsync("Invalid JSON in the request body.");
+                //    await context.Response.WriteAsync("Request body is empty.");
                 //    return;
                 //}
 
-                if (string.IsNullOrEmpty(requestBody))
-                {
-                    context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                    context.Response.ContentType = "application/json";
-                    await context.Response.WriteAsync("Request body is empty.");
-                    return;
-                }
+                //TModel? model = JsonConvert.DeserializeObject<TModel?>(requestBody);
+                //
+                //  Kraj Ver_1
+                //
 
-                TModel? model = JsonConvert.DeserializeObject<TModel?>(requestBody);
+                ///////////////////////////////
+                // 31.07.2023.  Ver_2
+                // Omogući buffering za request body
+                context.Request.EnableBuffering();
+                var model = await context.Request.ReadFromJsonAsync<TModel>();
+                // Resetuj pozicije streama na početak
+                context.Request.Body.Position = 0;
+                ///////////////////////////////
 
                 var validationResult = await _validator.ValidateAsync(model);
 
@@ -65,7 +81,7 @@ namespace CitiesManager.WebAPI.Middleware
                     return;
                 }
 
-                Console.WriteLine("Request Body: " + requestBody);
+                //Console.WriteLine("Request Body: " + requestBody);
                 Console.WriteLine("Deserialized Model: " + JsonConvert.SerializeObject(model));
                 Console.WriteLine("Model: " + model);
 
